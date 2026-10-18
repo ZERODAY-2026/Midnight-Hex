@@ -1,0 +1,27 @@
+database: DATAMIND_DB
+schema: OWID
+max_rows: 500
+
+tables:
+  ENERGY_CONSUMPTION:
+    description: "Annual energy consumption, emissions, and macroeconomic indicators by country"
+    columns:
+      COUNTRY: "Name of country or geographic territory"
+      YEAR: "Observation year (integer)"
+      PRIMARY_ENERGY_CONSUMPTION: "Primary energy consumption in terawatt-hours (TWh)"
+      RENEWABLES_SHARE_ENERGY: "Percentage of primary energy from renewables (%)"
+      FOSSIL_SHARE_ENERGY: "Percentage of primary energy from fossil fuels (%)"
+      CO2_EMISSIONS: "Annual carbon dioxide emissions in million metric tonnes"
+      POPULATION: "Total population count"
+      GDP: "Gross Domestic Product in constant 2015 USD"
+
+joins: []
+
+glossary:
+  renewable_energy: "RENEWABLES_SHARE_ENERGY"
+  fossil_fuels: "FOSSIL_SHARE_ENERGY"
+  emissions: "CO2_EMISSIONS"
+  per_capita_emissions: "CO2_EMISSIONS / NULLIF(POPULATION, 0)"
+  cleanest: "Highest RENEWABLES_SHARE_ENERGY"
+  highest_emissions: "Highest CO2_EMISSIONS"
+  largest_consumer: "Highest PRIMARY_ENERGY_CONSUMPTION"

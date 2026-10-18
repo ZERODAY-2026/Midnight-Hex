@@ -1,0 +1,107 @@
+# DataMind Golden Evaluation Benchmark: TPC-H SF1
+# 35 Ground Truth Questions and Canonical Snowflake SQL Queries
+
+- question: "How many orders are there in total?"
+  truth_sql: "SELECT COUNT(*) FROM ORDERS"
+
+- question: "How many total customers exist?"
+  truth_sql: "SELECT COUNT(*) FROM CUSTOMER"
+
+- question: "How many geographic regions are there?"
+  truth_sql: "SELECT COUNT(*) FROM REGION"
+
+- question: "How many nations are defined in the database?"
+  truth_sql: "SELECT COUNT(*) FROM NATION"
+
+- question: "How many orders have open status O?"
+  truth_sql: "SELECT COUNT(*) FROM ORDERS WHERE O_ORDERSTATUS = 'O'"
+
+- question: "How many orders have fulfilled status F?"
+  truth_sql: "SELECT COUNT(*) FROM ORDERS WHERE O_ORDERSTATUS = 'F'"
+
+- question: "How many customers belong to BUILDING market segment?"
+  truth_sql: "SELECT COUNT(*) FROM CUSTOMER WHERE C_MKTSEGMENT = 'BUILDING'"
+
+- question: "How many customers belong to AUTOMOBILE market segment?"
+  truth_sql: "SELECT COUNT(*) FROM CUSTOMER WHERE C_MKTSEGMENT = 'AUTOMOBILE'"
+
+- question: "How many orders have urgent priority?"
+  truth_sql: "SELECT COUNT(*) FROM ORDERS WHERE O_ORDERPRIORITY = '1-URGENT'"
+
+- question: "How many orders have high priority 2-HIGH?"
+  truth_sql: "SELECT COUNT(*) FROM ORDERS WHERE O_ORDERPRIORITY = '2-HIGH'"
+
+- question: "What is the average total price of orders?"
+  truth_sql: "SELECT AVG(O_TOTALPRICE) FROM ORDERS"
+
+- question: "What is the maximum order total price?"
+  truth_sql: "SELECT MAX(O_TOTALPRICE) FROM ORDERS"
+
+- question: "What is the minimum order total price?"
+  truth_sql: "SELECT MIN(O_TOTALPRICE) FROM ORDERS"
+
+- question: "What is the total account balance of all customers combined?"
+  truth_sql: "SELECT SUM(C_ACCTBAL) FROM CUSTOMER"
+
+- question: "What is the average customer account balance?"
+  truth_sql: "SELECT AVG(C_ACCTBAL) FROM CUSTOMER"
+
+- question: "How many customers are in each market segment?"
+  truth_sql: "SELECT C_MKTSEGMENT, COUNT(*) FROM CUSTOMER GROUP BY C_MKTSEGMENT ORDER BY COUNT(*) DESC"
+
+- question: "How many orders are there per order status?"
+  truth_sql: "SELECT O_ORDERSTATUS, COUNT(*) FROM ORDERS GROUP BY O_ORDERSTATUS ORDER BY COUNT(*) DESC"
+
+- question: "Count orders by order priority"
+  truth_sql: "SELECT O_ORDERPRIORITY, COUNT(*) FROM ORDERS GROUP BY O_ORDERPRIORITY ORDER BY O_ORDERPRIORITY"
+
+- question: "How many nations are in each region?"
+  truth_sql: "SELECT R.R_NAME, COUNT(N.N_NATIONKEY) FROM REGION R JOIN NATION N ON R.R_REGIONKEY = N.N_REGIONKEY GROUP BY R.R_NAME ORDER BY R.R_NAME"
+
+- question: "List the names of all nations in EUROPE"
+  truth_sql: "SELECT N.N_NAME FROM NATION N JOIN REGION R ON N.N_REGIONKEY = R.R_REGIONKEY WHERE R.R_NAME = 'EUROPE' ORDER BY N.N_NAME"
+
+- question: "List the names of all nations in ASIA"
+  truth_sql: "SELECT N.N_NAME FROM NATION N JOIN REGION R ON N.N_REGIONKEY = R.R_REGIONKEY WHERE R.R_NAME = 'ASIA' ORDER BY N.N_NAME"
+
+- question: "List the names of all nations in AMERICA"
+  truth_sql: "SELECT N.N_NAME FROM NATION N JOIN REGION R ON N.N_REGIONKEY = R.R_REGIONKEY WHERE R.R_NAME = 'AMERICA' ORDER BY N.N_NAME"
+
+- question: "How many customers are located in UNITED STATES?"
+  truth_sql: "SELECT COUNT(*) FROM CUSTOMER C JOIN NATION N ON C.C_NATIONKEY = N.N_NATIONKEY WHERE N.N_NAME = 'UNITED STATES'"
+
+- question: "How many customers are located in JAPAN?"
+  truth_sql: "SELECT COUNT(*) FROM CUSTOMER C JOIN NATION N ON C.C_NATIONKEY = N.N_NATIONKEY WHERE N.N_NAME = 'JAPAN'"
+
+- question: "How many customers are located in GERMANY?"
+  truth_sql: "SELECT COUNT(*) FROM CUSTOMER C JOIN NATION N ON C.C_NATIONKEY = N.N_NATIONKEY WHERE N.N_NAME = 'GERMANY'"
+
+- question: "How many customers are in the EUROPE region?"
+  truth_sql: "SELECT COUNT(*) FROM CUSTOMER C JOIN NATION N ON C.C_NATIONKEY = N.N_NATIONKEY JOIN REGION R ON N.N_REGIONKEY = R.R_REGIONKEY WHERE R.R_NAME = 'EUROPE'"
+
+- question: "How many customers are in the AMERICA region?"
+  truth_sql: "SELECT COUNT(*) FROM CUSTOMER C JOIN NATION N ON C.C_NATIONKEY = N.N_NATIONKEY JOIN REGION R ON N.N_REGIONKEY = R.R_REGIONKEY WHERE R.R_NAME = 'AMERICA'"
+
+- question: "How many orders were placed by customers in GERMANY?"
+  truth_sql: "SELECT COUNT(*) FROM ORDERS O JOIN CUSTOMER C ON O.O_CUSTKEY = C.C_CUSTKEY JOIN NATION N ON C.C_NATIONKEY = N.N_NATIONKEY WHERE N.N_NAME = 'GERMANY'"
+
+- question: "Top 5 customers by account balance"
+  truth_sql: "SELECT C_NAME, C_ACCTBAL FROM CUSTOMER ORDER BY C_ACCTBAL DESC LIMIT 5"
+
+- question: "Top 5 most expensive orders by total price"
+  truth_sql: "SELECT O_ORDERKEY, O_TOTALPRICE FROM ORDERS ORDER BY O_TOTALPRICE DESC LIMIT 5"
+
+- question: "What is the total order value for customers in JAPAN?"
+  truth_sql: "SELECT SUM(O.O_TOTALPRICE) FROM ORDERS O JOIN CUSTOMER C ON O.O_CUSTKEY = C.C_CUSTKEY JOIN NATION N ON C.C_NATIONKEY = N.N_NATIONKEY WHERE N.N_NAME = 'JAPAN'"
+
+- question: "How many orders were placed in 1995?"
+  truth_sql: "SELECT COUNT(*) FROM ORDERS WHERE O_ORDERDATE >= '1995-01-01' AND O_ORDERDATE <= '1995-12-31'"
+
+- question: "How many line items have return flag R?"
+  truth_sql: "SELECT COUNT(*) FROM LINEITEM WHERE L_RETURNFLAG = 'R'"
+
+- question: "What is the total count of line items?"
+  truth_sql: "SELECT COUNT(*) FROM LINEITEM"
+
+- question: "What is the total quantity of line items ordered?"
+  truth_sql: "SELECT SUM(L_QUANTITY) FROM LINEITEM"

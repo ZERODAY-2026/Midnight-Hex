@@ -1,0 +1,71 @@
+database: SNOWFLAKE_SAMPLE_DATA
+schema: TPCH_SF1
+max_rows: 500
+
+tables:
+  ORDERS:
+    description: "Customer orders records"
+    columns:
+      O_ORDERKEY: "Unique identifier for order"
+      O_CUSTKEY: "Foreign key referencing CUSTOMER.C_CUSTKEY"
+      O_ORDERSTATUS: "Status flag (O = open, F = fulfilled, P = pending)"
+      O_TOTALPRICE: "Total order value in USD"
+      O_ORDERDATE: "Date order was placed"
+      O_ORDERPRIORITY: "Priority level (1-URGENT, 2-HIGH, 3-MEDIUM, 4-NOT SPECIFIED, 5-LOW)"
+      O_CLERK: "Identifier of clerk who handled the order"
+      O_SHIPPRIORITY: "Shipping priority number"
+      O_COMMENT: "Descriptive comments on the order"
+  CUSTOMER:
+    description: "Customer accounts and demographic details"
+    columns:
+      C_CUSTKEY: "Unique identifier for customer"
+      C_NAME: "Customer name"
+      C_ADDRESS: "Street address"
+      C_NATIONKEY: "Foreign key referencing NATION.N_NATIONKEY"
+      C_PHONE: "Customer contact phone number"
+      C_ACCTBAL: "Current account balance in USD"
+      C_MKTSEGMENT: "Market segment category (BUILDING, AUTOMOBILE, MACHINERY, HOUSEHOLD, FURNITURE)"
+      C_COMMENT: "Descriptive comments on customer"
+  NATION:
+    description: "Countries and nations reference data"
+    columns:
+      N_NATIONKEY: "Unique identifier for nation"
+      N_NAME: "Nation / country name in uppercase (e.g., UNITED STATES, JAPAN, GERMANY)"
+      N_REGIONKEY: "Foreign key referencing REGION.R_REGIONKEY"
+      N_COMMENT: "Descriptive comments on nation"
+  REGION:
+    description: "Geographic continents and regions"
+    columns:
+      R_REGIONKEY: "Unique identifier for region"
+      R_NAME: "Region name in uppercase (AFRICA, AMERICA, ASIA, EUROPE, MIDDLE EAST)"
+      R_COMMENT: "Descriptive comments on region"
+  LINEITEM:
+    description: "Individual line items associated with orders"
+    columns:
+      L_ORDERKEY: "Foreign key referencing ORDERS.O_ORDERKEY"
+      L_PARTKEY: "Part identifier"
+      L_SUPPKEY: "Supplier identifier"
+      L_LINENUMBER: "Line number of item in order"
+      L_QUANTITY: "Quantity ordered"
+      L_EXTENDEDPRICE: "Item price before discount"
+      L_DISCOUNT: "Discount rate (e.g., 0.05 for 5%)"
+      L_TAX: "Tax rate (e.g., 0.07 for 7%)"
+      L_RETURNFLAG: "Return flag (R, A, N)"
+      L_LINESTATUS: "Line status flag (O, F)"
+      L_SHIPDATE: "Shipping date"
+      L_COMMITDATE: "Commitment date"
+      L_RECEIPTDATE: "Receipt date"
+
+joins:
+  - ORDERS.O_CUSTKEY = CUSTOMER.C_CUSTKEY
+  - CUSTOMER.C_NATIONKEY = NATION.N_NATIONKEY
+  - NATION.N_REGIONKEY = REGION.R_REGIONKEY
+  - LINEITEM.L_ORDERKEY = ORDERS.O_ORDERKEY
+
+glossary:
+  revenue: "SUM(LINEITEM.L_EXTENDEDPRICE * (1 - LINEITEM.L_DISCOUNT))"
+  total_revenue: "SUM(LINEITEM.L_EXTENDEDPRICE * (1 - LINEITEM.L_DISCOUNT))"
+  top: "Default ranking metric is revenue unless user says otherwise"
+  highest_spending: "Customer with highest total revenue or order totalprice"
+  active_orders: "ORDERS where O_ORDERSTATUS = 'O'"
+  fulfilled_orders: "ORDERS where O_ORDERSTATUS = 'F'"
